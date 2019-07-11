@@ -21,7 +21,7 @@ class NetlifyPaths {
   static defaultOptions() {
     return {
       contentTypes: [],
-      coverField: 'cover_image',
+      coverField: undefined,
       mimeType: 'text/markdown',
     }
   }
@@ -54,10 +54,11 @@ class NetlifyPaths {
             typeName: typeName,
             route: route,
           })
-
-        ContentType.on('add', node => {
-          node[coverField] = this.fixPath(node[coverField])
-        })
+        if (coverField !== undefined) {
+          ContentType.on('add', node => {
+            node[coverField] = this.fixPath(node[coverField])
+          })
+        }
       }
     }
   }
