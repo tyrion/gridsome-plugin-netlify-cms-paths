@@ -1,12 +1,15 @@
 {
   "name": "gridsome-plugin-netlify-cms-paths",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fix markdown image paths to work with NetlifyCMS",
   "main": "index.js",
   "repository": "https://github.com/tyrion/gridsome-plugin-netlify-cms-paths",
   "author": "Germano Gabbianelli <git@germano.dev>",
   "license": "MIT",
-  "keywords": ["gridsome", "gridsome-plugin"],
+  "keywords": [
+    "gridsome",
+    "gridsome-plugin"
+  ],
   "dependencies": {
     "js-yaml": "^3.13.1"
   }
