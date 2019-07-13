@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const yaml = require('js-yaml')
+const RemarkTransformer = require('@gridsome/transformer-remark')
 
 function getCMSConfigPath(config) {
   try {
@@ -22,7 +23,6 @@ class NetlifyPaths {
     return {
       contentTypes: [],
       coverField: undefined,
-      mimeType: 'text/markdown',
     }
   }
 
@@ -30,18 +30,12 @@ class NetlifyPaths {
     this.options = options
 
     const {_app, config, context, store} = api
-
     const cmsConfig = yaml.safeLoad(
       fs.readFileSync(getCMSConfigPath(config), 'utf8'),
     )
 
     this.mediaFolder = path.join(context, cmsConfig.media_folder)
     this.publicFolder = cmsConfig.public_folder
-
-    let remark = store._transformers[options.mimeType]
-    const _resolve = remark.resolveNodeFilePath.bind(remark)
-    remark.resolveNodeFilePath = (node, toPath) =>
-      _resolve(node, this.fixPath(toPath))
 
     for (const {use, options: opts} of config.plugins) {
       if (
@@ -54,7 +48,23 @@ class NetlifyPaths {
             typeName: typeName,
             route: route,
           })
+
+        // Patch remark transformer to fix image paths in markdown bodies
+        for (const mimeType of RemarkTransformer.mimeTypes()) {
+          const transformer = ContentType._transformers[mimeType]
+          if (transformer instanceof RemarkTransformer) {
+            console.info(
+              `Patching RemarkTransformer for ${typeName} (${mimeType})`,
+            )
+            const _resolve = transformer.resolveNodeFilePath.bind(transformer)
+            transformer.resolveNodeFilePath = (node, toPath) =>
+              _resolve(node, this.fixPath(toPath))
+          }
+        }
+
+        // Fix cover images
         if (coverField !== undefined) {
+          console.info(`Fixing cover images for ${typeName}.${coverField}`)
           ContentType.on('add', node => {
             node[coverField] = this.fixPath(node[coverField])
           })

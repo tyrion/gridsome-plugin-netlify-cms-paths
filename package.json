@@ -12,5 +12,9 @@
   ],
   "dependencies": {
     "js-yaml": "^3.13.1"
+  },
+  "peerDependencies": {
+    "@gridsome/transformer-remark": "^0.3.2",
+    "gridsome": "^0.6.5"
   }
 }
