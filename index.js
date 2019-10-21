@@ -44,7 +44,7 @@ class NetlifyPaths {
       ) {
         const {typeName, route} = opts,
           coverField = opts.coverField || options.coverField,
-          ContentType = store.addContentType({
+          ContentType = store.addCollection({
             typeName: typeName,
             route: route,
           })
