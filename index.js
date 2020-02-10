@@ -76,7 +76,7 @@ class NetlifyPaths {
   fixPath(imagePath) {
     let out = imagePath
     if (imagePath !== undefined) {
-      if (/^\w/.test(imagePath) && !/:\/\//.test(imagePath))
+      if (/^\w/.test(imagePath) && !/^[a-z][a-z0-9+.-]*:/i.test(imagePath))
         out = path.join(this.mediaFolder, imagePath)
       else if (imagePath.startsWith(this.publicFolder))
         out = path.join(
