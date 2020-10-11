@@ -3,6 +3,11 @@ const path = require('path')
 const yaml = require('js-yaml')
 const RemarkTransformer = require('@gridsome/transformer-remark')
 
+const markdownResolver = [
+  '@gridsome/source-filesystem',
+  '@gridsome/vue-remark'
+]
+
 function getCMSConfigPath(config) {
   try {
     const cmsEntry = config.plugins.find(
@@ -39,7 +44,7 @@ class NetlifyPaths {
 
     for (const {use, options: opts} of config.plugins) {
       if (
-        use === '@gridsome/source-filesystem' &&
+        markdownResolver.includes(use) &&
         options.contentTypes.includes(opts.typeName)
       ) {
         const {typeName, route} = opts,
