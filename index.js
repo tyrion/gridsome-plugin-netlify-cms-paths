@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const yaml = require('js-yaml')
+const get = require("lodash/get")
+const set = require("lodash/set")
 const RemarkTransformer = require('@gridsome/transformer-remark')
 
 const markdownResolver = [
@@ -71,7 +73,7 @@ class NetlifyPaths {
         if (coverField !== undefined) {
           console.info(`Fixing cover images for ${typeName}.${coverField}`)
           ContentType.on('add', node => {
-            node[coverField] = this.fixPath(node[coverField])
+            set(node, coverField, this.fixPath(get(node, coverField)))
           })
         }
       }

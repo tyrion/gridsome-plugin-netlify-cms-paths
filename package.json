@@ -11,7 +11,8 @@
     "gridsome-plugin"
   ],
   "dependencies": {
-    "js-yaml": "^3.13.1"
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "@gridsome/transformer-remark": "^0.3.2",
